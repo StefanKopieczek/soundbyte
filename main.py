@@ -1,5 +1,5 @@
 import sys
-from soundbytes import load_sound, play_sound, write_wav
+from soundbyte import load_sound, play_sound, write_wav
 
 def main():
     path = sys.argv[1]
