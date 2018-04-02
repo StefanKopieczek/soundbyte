@@ -5,8 +5,9 @@ import wave
 
 def load_sound(path, start=0, end=None):
     with wave.open(path, mode='rb') as audio:
-        if end is None:
-            end = get_total_duration(audio)
+        duration = get_total_duration(audio)
+        if end is None or end > duration:
+            end = duration
 
         start_offset = get_num_frames(audio, start)
         total_frames = get_num_frames(audio, end-start)
