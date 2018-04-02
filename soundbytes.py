@@ -11,7 +11,8 @@ def load_sound(path, start=0, end=None):
         start_offset = get_num_frames(audio, start)
         total_frames = get_num_frames(audio, end-start)
         fast_forward(audio, start_offset)
-        return read_frames(audio, total_frames)
+        return (audio.getparams(),
+                read_frames(audio, total_frames))
 
 
 def fast_forward(audio, num_frames):
@@ -37,7 +38,14 @@ def get_num_frames(audio, offset_secs):
     hz = audio.getframerate()
     return int(hz * offset_secs)
 
-def play_sound(raw_audio):
+
+def write_wav(path, params, raw_audio):
+    with wave.open(path, 'wb') as out:
+        out.setparams(params)
+        out.writeframes(raw_audio)
+
+
+def play_sound(params, raw_audio):
     p = pyaudio.PyAudio()
     stream = p.open(format=p.get_format_from_width(2),
             channels=1,
@@ -47,5 +55,3 @@ def play_sound(raw_audio):
     stream.stop_stream()
     stream.close()
     p.terminate()
-
-play_sound(load_sound(sys.argv[1], 1, 2))
