@@ -4,14 +4,13 @@ from soundbyte import load_sound, play_sound, write_wav
 def main():
     path = sys.argv[1]
     start = float(sys.argv[2])
-    dest = sys.argv[3]
-    end = start + 10  # Default duration of 10s
+    end = float(sys.argv[3])
+    dest = sys.argv[4]
     resolution = 1
     while True:
         print_status(start, end, resolution)
         display_usage()
         audio = load_sound(path, start, end)
-        play_sound(*audio)
         is_done, start, end, resolution = handle_input(
                 start, end, resolution, audio, dest)
         if is_done:
@@ -59,7 +58,7 @@ def handle_input(start, end, resolution, audio, dest):
     elif choice == 's':
         write_wav(dest, *audio)
 
-    is_done = (choice in 'ps')
+    is_done = (choice == 's')
     return is_done, start, end, resolution
 
 if __name__ == '__main__':
